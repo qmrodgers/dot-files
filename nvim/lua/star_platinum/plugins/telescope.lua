@@ -10,6 +10,8 @@ return {
 
         { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
 
+        'nvim-telescope/telescope-live-grep-args.nvim',
+
         "nvim-tree/nvim-web-devicons",
 
     },
@@ -22,6 +24,8 @@ return {
         local actions = require("telescope.actions")
 
         local mappings = require("telescope.mappings")
+
+        local lga_actions = require("telescope-live-grep-args.actions")
 
         telescope.setup({
 
@@ -37,7 +41,7 @@ return {
 
                         ["<C-j>"] = actions.move_selection_next,     -- move to next result
 
-                        ["<C-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
+                        -- ["<C-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
 
                         ["<C-s>"] = actions.file_split,
 
@@ -48,18 +52,31 @@ return {
                     },
 
                 },
+            },
+            extensions = {
+                live_grep_args = {
+                    auto_quoting = true, -- enable/disable auto-quoting
+                    -- define mappings, e.g.
+                    mappings = {         -- extend mappings
+                        i = {
+                            ["<C-u>"] = lga_actions.quote_prompt(),
+                            ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+                            -- freeze the current list and start a fuzzy search in the frozen list
+                            ["<C-space>"] = actions.to_fuzzy_refine,
+                        },
+                    },
+                    -- ... also accepts theme settings, for example:
+                    -- theme = "dropdown", -- use dropdown theme
+                    -- theme = { }, -- use own theme spec
+                    -- layout_config = { mirror=true }, -- mirror preview pane
+                },
+                quicknote = {
+
+                    defaultScope = "CWD",
+
+                },
 
             },
-
-            -- extensions = {
-            --
-            --     quicknote = {
-            --
-            --         defaultScope = "CWD",
-            --
-            --     },
-            --
-            -- },
 
         })
 
@@ -81,7 +98,9 @@ return {
 
         telescope.load_extension("fzf")
 
-        -- telescope.load_extension("quicknote")
+        telescope.load_extension("quicknote")
+
+        telescope.load_extension("live_grep_args")
 
 
 
@@ -103,7 +122,8 @@ return {
 
         keymap.set("n", "<leader>sw", builtin.grep_string, { desc = "[S]earch current [W]ord" })
 
-        keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "[S]earch by [G]rep" })
+        keymap.set("n", "<leader>sg",
+            require('telescope').extensions.live_grep_args.live_grep_args, { desc = "[S]earch by [G]rep" })
 
         keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })
 

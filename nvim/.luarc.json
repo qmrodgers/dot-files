@@ -1,0 +1,7 @@
+{
+    "diagnostics.globals": [
+        "vim",
+        "window_movement_mode",
+        "toggle_window_traversal_mode"
+    ]
+}

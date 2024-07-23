@@ -5,7 +5,6 @@ return {
     dependencies = { 'nvim-tree/nvim-web-devicons' },
 
     config = function()
-
         local colors = {
 
             bg       = '#011628',
@@ -37,25 +36,19 @@ return {
         local conditions = {
 
             buffer_not_empty = function()
-
                 return vim.fn.empty(vim.fn.expand('%:t')) ~= 1
-
             end,
 
             hide_in_width = function()
-
                 return vim.fn.winwidth(0) > 80
-
             end,
 
             check_git_workspace = function()
-
                 local filepath = vim.fn.expand('%:p:h')
 
                 local gitdir = vim.fn.finddir('.git', filepath .. ';')
 
                 return gitdir and #gitdir > 0 and #gitdir < #filepath
-
             end,
 
         }
@@ -130,37 +123,37 @@ return {
 
             },
 
-            winbar = {
-
-                lualine_a = {},
-
-                lualine_b = {},
-
-                lualine_c = { 'filename' },
-
-                lualine_x = {},
-
-                lualine_y = {},
-
-                lualine_z = {}
-
-            },
-
-            inactive_winbar = {
-
-                lualine_a = {},
-
-                lualine_b = {},
-
-                lualine_c = { 'filename' },
-
-                lualine_x = {},
-
-                lualine_y = {},
-
-                lualine_z = {}
-
-            },
+            -- winbar = {
+            --
+            --     lualine_a = {},
+            --
+            --     lualine_b = {},
+            --
+            --     lualine_c = { 'filename' },
+            --
+            --     lualine_x = {},
+            --
+            --     lualine_y = {},
+            --
+            --     lualine_z = {}
+            --
+            -- },
+            --
+            -- inactive_winbar = {
+            --
+            --     lualine_a = {},
+            --
+            --     lualine_b = {},
+            --
+            --     lualine_c = { 'filename' },
+            --
+            --     lualine_x = {},
+            --
+            --     lualine_y = {},
+            --
+            --     lualine_z = {}
+            --
+            -- },
 
         }
 
@@ -169,9 +162,7 @@ return {
         -- Inserts a component in lualine_c at left section
 
         local function ins_left(component)
-
             table.insert(config.sections.lualine_c, component)
-
         end
 
 
@@ -179,9 +170,7 @@ return {
         -- Inserts a component in lualine_x at right section
 
         local function ins_right(component)
-
             table.insert(config.sections.lualine_x, component)
-
         end
 
 
@@ -189,9 +178,7 @@ return {
         ins_left {
 
             function()
-
                 return '▊'
-
             end,
 
             color = { fg = colors.blue },      -- Sets highlighting of component
@@ -207,13 +194,10 @@ return {
             -- mode component
 
             function()
-
                 return ''
-
             end,
 
             color = function()
-
                 -- auto change color according to neovims mode
 
                 local mode_color = {
@@ -261,7 +245,6 @@ return {
                 }
 
                 return { fg = mode_color[vim.fn.mode()] }
-
             end,
 
             padding = { right = 1 },
@@ -331,9 +314,7 @@ return {
         ins_left {
 
             function()
-
                 return '%='
-
             end,
 
         }
@@ -345,7 +326,6 @@ return {
             -- Lsp server name .
 
             function()
-
                 local msg = 'No Active Lsp'
 
                 local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
@@ -353,25 +333,18 @@ return {
                 local clients = vim.lsp.get_active_clients()
 
                 if next(clients) == nil then
-
                     return msg
-
                 end
 
                 for _, client in ipairs(clients) do
-
                     local filetypes = client.config.filetypes
 
                     if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-
                         return client.name
-
                     end
-
                 end
 
                 return msg
-
             end,
 
             icon = ' LSP:',
@@ -451,9 +424,7 @@ return {
         ins_right {
 
             function()
-
                 return '▊'
-
             end,
 
             color = { fg = colors.blue },
@@ -465,7 +436,6 @@ return {
 
 
         require('lualine').setup(config)
-
     end
 
 }

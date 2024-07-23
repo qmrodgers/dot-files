@@ -4,6 +4,16 @@ vim.keymap.set("i", "jk", "<ESC>", { desc = "Exit Insert Mode" })
 
 vim.keymap.set("i", "<C-v>", "<C-r>+", { desc = "Paste From + Register" })
 
+vim.keymap.set("n", "<S-j>", "j", { noremap = true, silent = true })
+vim.keymap.set("n", "<S-k>", "k", { noremap = true, silent = true })
+vim.keymap.set("n", "<S-h>", "h", { noremap = true, silent = true })
+vim.keymap.set("n", "<S-l>", "l", { noremap = true, silent = true })
+
+vim.keymap.set({ "n", "v" }, "<S-Down>", "<Down>", { noremap = true, silent = true })
+vim.keymap.set({ "n", "v" }, "<S-Up>", "<Up>", { noremap = true, silent = true })
+vim.keymap.set({ "n", "v" }, "<S-Left>", "<Left>", { noremap = true, silent = true })
+vim.keymap.set({ "n", "v" }, "<S-Right>", "<Right>", { noremap = true, silent = true })
+
 -- quick window move, splits
 
 vim.keymap.set({ "n" }, "<leader>wb", "<C-w><C-w>", { desc = "[W]indow [B]ounce" })
@@ -12,7 +22,7 @@ vim.keymap.set({ "n" }, "<leader>wv", "<C-w>v", { desc = "[W]indow [V]ertical Sp
 
 vim.keymap.set({ "n" }, "<leader>ws", "<C-w>s", { desc = "[W]indow Horizontal [S]plit" })
 
-vim.keymap.set({ "n" }, "<leader>cw", "<C-w>q", { desc = "[C]lose Active [W]indow" })
+vim.keymap.set({ "n" }, "<leader>wc", "<C-w>q", { desc = "[W]indow [C]lose" })
 
 vim.keymap.set({ "n" }, "<leader>wH", "<C-w>H", { desc = "Move [W]indow Left" })
 
@@ -33,6 +43,27 @@ vim.keymap.set({ "n" }, "<leader>wk", "<C-w>k", { desc = "Window Travel Down" })
 vim.keymap.set({ "n" }, "<leader>w=", "<C-w>=", { desc = "[W]indow Equalization ([=])" })
 
 
+-- local window_traversal_mode = false
+-- function toggle_window_traversal_mode()
+--     if not window_traversal_mode then
+--         vim.api.nvim_set_keymap('n', 'h', '<C-w>h', { noremap = true, silent = true })
+--         vim.api.nvim_set_keymap('n', 'j', '<C-w>j', { noremap = true, silent = true })
+--         vim.api.nvim_set_keymap('n', 'k', '<C-w>k', { noremap = true, silent = true })
+--         vim.api.nvim_set_keymap('n', 'l', '<C-w>l', { noremap = true, silent = true })
+--     else
+--         vim.api.nvim_del_keymap('n', 'h')
+--         vim.api.nvim_del_keymap('n', 'j')
+--         vim.api.nvim_del_keymap('n', 'k')
+--         vim.api.nvim_del_keymap('n', 'l')
+--         -- vim.api.nvim_set_keymap('n', 'h', 'h', { noremap = false, silent = true })
+--         -- vim.api.nvim_set_keymap('n', 'j', 'j', { noremap = false, silent = true })
+--         -- vim.api.nvim_set_keymap('n', 'k', 'k', { noremap = false, silent = true })
+--         -- vim.api.nvim_set_keymap('n', 'l', 'l', { noremap = false, silent = true })
+--     end
+--     window_movement_mode = not window_movement_mode
+-- end
+--
+-- vim.api.nvim_set_keymap('n', '<leader>wb', ':lua toggle_window_traversal_mode()<CR>', { noremap = true, silent = true })
 
 -- <leader>v performs v% (will select from bracket to bracket)
 
@@ -435,11 +466,17 @@ local status, terminal_exists = pcall(vim.api.nvim_get_option_info, 'terminal_em
 
 if status then
     vim.o.terminal_emulator = 'C:/Users/VAE9WP/AppData/Local/Programs/Git/bin/sh.exe'
+    vim.o.shell = 'C:/Users/VAE9WP/AppData/Local/Programs/Git/bin/sh.exe'
+    vim.o.shellcmdflag = '-c'
+else
+    vim.o.shell = 'zsh'
+    vim.o.shellcmdflag = '-c'
 end
 
-vim.o.shell = 'C:/Users/VAE9WP/AppData/Local/Programs/Git/bin/sh.exe'
 
-vim.o.shellcmdflag = '-c'
+-- vim.o.shell = 'C:/Users/VAE9WP/AppData/Local/Programs/Git/bin/sh.exe'
+
+-- vim.o.shellcmdflag = '-c'
 
 -- vim.g.completeslash="slash"
 

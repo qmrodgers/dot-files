@@ -1,0 +1,37 @@
+return {
+    "Shatur/neovim-session-manager",
+    dependencies = {
+        "nvim-lua/plenary.nvim"
+    },
+    config = function()
+        config = require("session_manager.config")
+        session_manager = require("session_manager").setup {
+            autoload_mode = { config.AutoloadMode.CurrentDir, config.AutoloadMode.GitSession, config.AutoloadMode.LastSession }
+        }
+
+        vim.keymap.set("n", "<leader>sr", "<cmd>SessionManager load_last_session<CR>",
+            { desc = "Auto [S]ession [R]estore" })
+        vim.keymap.set("n", "<leader>ss", "<cmd>SessionManager save_current_session<CR>", { desc = "[S]ession [S]ave" })
+        vim.keymap.set("n", "<leader>sl", "<cmd>SessionManager! load_session<CR>", { desc = "[S]ession [L]oad" })
+        vim.keymap.set("n", "<leader>sp", "<cmd>SessionManager! load_git_session<CR>",
+            { desc = "[S]ession [L]oad Git [P]roject" })
+        vim.keymap.set("n", "<leader>sdc", "<cmd>SessionManager delete_current_dir_session<CR>",
+            { desc = "[S]ession [D]elete [C]urrent Dir" })
+        vim.keymap.set("n", "<leader>sdd", "<cmd>SessionManager delete_session<CR>",
+            { desc = "[S]ession [D]elete [D]ecide" })
+        vim.keymap.set("n", "<leader>sm", "<cmd>SessionManager<CR>",
+            { desc = "Auto [S]ession [R]estore" })
+        vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+            callback = function()
+                for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+                    -- Don't save while there's any 'nofile' buffer open.
+                    if vim.api.nvim_get_option_value("buftype", { buf = buf }) == 'nofile' then
+                        return
+                    end
+                end
+                session_manager.save_current_session()
+            end
+        })
+    end
+
+}
