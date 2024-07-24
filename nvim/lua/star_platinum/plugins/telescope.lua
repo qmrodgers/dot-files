@@ -27,9 +27,29 @@ return {
 
         local lga_actions = require("telescope-live-grep-args.actions")
 
+        local lga_shortcuts = require("telescope-live-grep-args.shortcuts")
+
         telescope.setup({
 
             defaults = {
+
+                vimgrep_arguments = {
+
+                    'rg',
+
+                    '--hidden',
+
+                    '--no-heading',
+
+                    '--with-filename',
+
+                    '--line-number',
+
+                    '--column',
+
+                    '--smart-case'
+
+                },
 
                 path_display = { "truncate" },
 
@@ -41,7 +61,7 @@ return {
 
                         ["<C-j>"] = actions.move_selection_next,     -- move to next result
 
-                        -- ["<C-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
+                        ["<C-q>"] = actions.send_to_qflist,
 
                         ["<C-s>"] = actions.file_split,
 
@@ -62,7 +82,7 @@ return {
                             ["<C-u>"] = lga_actions.quote_prompt(),
                             ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
                             -- freeze the current list and start a fuzzy search in the frozen list
-                            ["<C-space>"] = actions.to_fuzzy_refine,
+                            ["<C-o>"] = actions.to_fuzzy_refine,
                         },
                     },
                     -- ... also accepts theme settings, for example:
@@ -122,8 +142,19 @@ return {
 
         keymap.set("n", "<leader>sw", builtin.grep_string, { desc = "[S]earch current [W]ord" })
 
+        keymap.set("n", "<leader>pp", builtin.resume, { desc = "[P]revious [P]icker" })
+
+        keymap.set("n", "<leader>q", "<cmd>Telescope quickfix<CR>", { desc = "View Quick Fix Menu" })
+
+        keymap.set("n", "<leader>Q", "<cmd>Telescope quickfixhistory<CR>", { desc = "View Quick Fix History Menu" })
+
         keymap.set("n", "<leader>sg",
-            require('telescope').extensions.live_grep_args.live_grep_args, { desc = "[S]earch by [G]rep" })
+            require('telescope').extensions.live_grep_args.live_grep_args,
+            { desc = "[S]earch by [G]rep" })
+
+        keymap.set("n", "<leader>sG",
+            lga_shortcuts.grep_word_under_cursor,
+            { desc = "[S]earch Current Word by [G]rep" })
 
         keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })
 

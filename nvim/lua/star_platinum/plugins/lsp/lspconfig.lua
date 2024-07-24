@@ -13,7 +13,6 @@ return {
     },
 
     config = function()
-
         -- import lspconfig plugin
 
         local lspconfig = require("lspconfig")
@@ -33,7 +32,6 @@ return {
         local opts = { noremap = true, silent = true }
 
         local on_attach = function(client, bufnr)
-
             opts.buffer = bufnr
 
 
@@ -115,7 +113,6 @@ return {
             opts.desc = "Restart LSP"
 
             keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
-
         end
 
 
@@ -128,18 +125,13 @@ return {
 
 
 
-        -- Change the Diagnostic symbols in the sign column (gutter)
-
-        -- (not in youtube nvim video)
 
         local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
 
         for type, icon in pairs(signs) do
-
             local hl = "DiagnosticSign" .. type
 
             vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-
         end
 
 
@@ -190,207 +182,199 @@ return {
 
         -- lspconfig["tailwindcss"].setup({
 
-            --     capabilities = capabilities,
+        --     capabilities = capabilities,
 
-            --     on_attach = on_attach,
+        --     on_attach = on_attach,
 
-            --     inlay_hints = inlay_hints,
+        --     inlay_hints = inlay_hints,
 
-            -- })
+        -- })
 
 
 
-            -- configure svelte server
+        -- configure svelte server
 
-            lspconfig["svelte"].setup({
+        lspconfig["svelte"].setup({
 
-                capabilities = capabilities,
+            capabilities = capabilities,
 
-                on_attach = function(client, bufnr)
+            on_attach = function(client, bufnr)
+                on_attach(client, bufnr)
 
-                    on_attach(client, bufnr)
 
 
+                vim.api.nvim_create_autocmd("BufWritePost", {
 
-                    vim.api.nvim_create_autocmd("BufWritePost", {
+                    pattern = { "*.js", "*.ts" },
 
-                        pattern = { "*.js", "*.ts" },
+                    callback = function(ctx)
+                        if client.name == "svelte" then
+                            client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.file })
+                        end
+                    end,
 
-                        callback = function(ctx)
+                })
+            end,
 
-                            if client.name == "svelte" then
+            inlay_hints = inlay_hints,
 
-                                client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.file })
+        })
 
-                            end
 
-                        end,
 
-                    })
+        -- configure prisma orm server
 
-                end,
+        lspconfig["prismals"].setup({
 
-                inlay_hints = inlay_hints,
+            capabilities = capabilities,
 
-            })
+            on_attach = on_attach,
 
+            inlay_hints = inlay_hints,
 
+        })
 
-            -- configure prisma orm server
 
-            lspconfig["prismals"].setup({
 
-                capabilities = capabilities,
+        -- configure graphql language server
 
-                on_attach = on_attach,
+        lspconfig["graphql"].setup({
 
-                inlay_hints = inlay_hints,
+            capabilities = capabilities,
 
-            })
+            on_attach = on_attach,
 
+            filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
 
+            inlay_hints = inlay_hints,
 
-            -- configure graphql language server
+        })
 
-            lspconfig["graphql"].setup({
 
-                capabilities = capabilities,
 
-                on_attach = on_attach,
+        -- configure emmet language server
 
-                filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
+        lspconfig["emmet_ls"].setup({
 
-                inlay_hints = inlay_hints,
+            capabilities = capabilities,
 
-            })
+            on_attach = on_attach,
 
+            filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
 
+            inlay_hints = inlay_hints,
 
-            -- configure emmet language server
+        })
 
-            lspconfig["emmet_ls"].setup({
 
-                capabilities = capabilities,
 
-                on_attach = on_attach,
+        -- configure python server
 
-                filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
+        lspconfig["pyright"].setup({
 
-                inlay_hints = inlay_hints,
+            capabilities = capabilities,
 
-            })
+            on_attach = on_attach,
 
+            inlay_hints = inlay_hints,
 
+        })
 
-            -- configure python server
 
-            lspconfig["pyright"].setup({
 
-                capabilities = capabilities,
+        -- configure terraform LSP
 
-                on_attach = on_attach,
+        lspconfig["terraformls"].setup({
 
-                inlay_hints = inlay_hints,
+            capabilities = capabilities,
 
-            })
+            on_attach = on_attach,
 
+            filetypes = { "terraform", "tf" },
 
+            inlay_hints = inlay_hints,
 
-            -- configure terraform LSP
+        })
 
-            lspconfig["terraformls"].setup({
 
-                capabilities = capabilities,
 
-                on_attach = on_attach,
+        -- configure terraform LSP
 
-                filetypes = { "terraform", "tf" },
+        lspconfig["rust_analyzer"].setup({
 
-                inlay_hints = inlay_hints,
+            capabilities = capabilities,
 
-            })
+            on_attach = on_attach,
 
+            filetypes = { "rust", "rs" },
 
+            inlay_hints = inlay_hints,
 
-            -- configure terraform LSP
+        })
 
-            lspconfig["rust_analyzer"].setup({
 
-                capabilities = capabilities,
 
-                on_attach = on_attach,
+        -- configure java LSP
 
-                filetypes = { "rust", "rs" },
+        lspconfig["jdtls"].setup({
 
-                inlay_hints = inlay_hints,
+            capabilities = capabilities,
 
-            })
+            on_attach = on_attach,
 
+            filetypes = { "java" },
 
+            inlay_hints = inlay_hints,
 
-            -- configure java LSP
+        })
 
-            lspconfig["jdtls"].setup({
 
-                capabilities = capabilities,
 
-                on_attach = on_attach,
+        -- configure kotlin LSP
 
-                filetypes = { "java" },
+        lspconfig["kotlin_language_server"].setup({
 
-                inlay_hints = inlay_hints,
+            capabilities = capabilities,
 
-            })
+            on_attach = on_attach,
 
+            filetypes = { "kotlin" },
 
+            inlay_hints = inlay_hints,
 
-            -- configure kotlin LSP
+        })
 
-            lspconfig["kotlin_language_server"].setup({
+        -- configure lua server (with special settings)
 
-                capabilities = capabilities,
+        lspconfig["lua_ls"].setup({
 
-                on_attach = on_attach,
+            capabilities = capabilities,
 
-                filetypes = { "kotlin" },
+            on_attach = on_attach,
 
-                inlay_hints = inlay_hints,
+            inlay_hints = inlay_hints,
 
-            })
+            settings = { -- custom settings for lua
 
-            -- configure lua server (with special settings)
+                Lua = {
 
-            lspconfig["lua_ls"].setup({
+                    -- make the language server recognize "vim" global
 
-                capabilities = capabilities,
+                    diagnostics = {
 
-                on_attach = on_attach,
+                        globals = { "vim" },
 
-                inlay_hints = inlay_hints,
+                    },
 
-                settings = { -- custom settings for lua
+                    workspace = {
 
-                    Lua = {
+                        -- make language server aware of runtime files
 
-                        -- make the language server recognize "vim" global
+                        library = {
 
-                        diagnostics = {
+                            [vim.fn.expand("$VIMRUNTIME/lua")] = true,
 
-                            globals = { "vim" },
-
-                        },
-
-                        workspace = {
-
-                            -- make language server aware of runtime files
-
-                            library = {
-
-                                [vim.fn.expand("$VIMRUNTIME/lua")] = true,
-
-                                [vim.fn.stdpath("config") .. "/lua"] = true,
-
-                            },
+                            [vim.fn.stdpath("config") .. "/lua"] = true,
 
                         },
 
@@ -398,10 +382,9 @@ return {
 
                 },
 
-            })
+            },
 
-        end,
+        })
+    end,
 
-    }
-
-
+}

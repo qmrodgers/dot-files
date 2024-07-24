@@ -14,34 +14,67 @@ vim.keymap.set({ "n", "v" }, "<S-Up>", "<Up>", { noremap = true, silent = true }
 vim.keymap.set({ "n", "v" }, "<S-Left>", "<Left>", { noremap = true, silent = true })
 vim.keymap.set({ "n", "v" }, "<S-Right>", "<Right>", { noremap = true, silent = true })
 
+
+
+
+-- vim.keymap.del('n', '<C-w>')
 -- quick window move, splits
 
-vim.keymap.set({ "n" }, "<leader>wb", "<C-w><C-w>", { desc = "[W]indow [B]ounce" })
+vim.keymap.set({ "n" }, "<Tab>", "<C-w><C-w>", { noremap = true, desc = "[W]indow Move" })
 
-vim.keymap.set({ "n" }, "<leader>wv", "<C-w>v", { desc = "[W]indow [V]ertical Split" })
+vim.keymap.set({ "n" }, "<A-v>", "<C-w>v", { noremap = true, desc = "Window [V]ertical Split" })
 
-vim.keymap.set({ "n" }, "<leader>ws", "<C-w>s", { desc = "[W]indow Horizontal [S]plit" })
+vim.keymap.set({ "n" }, "<A-s>", "<C-w>s", { noremap = true, desc = "[W]indow Horizontal [S]plit" })
 
-vim.keymap.set({ "n" }, "<leader>wc", "<C-w>q", { desc = "[W]indow [C]lose" })
+vim.keymap.set({ "n" }, "<A-c>", "<C-w>q", { noremap = true, desc = "[C]lose Window" })
 
-vim.keymap.set({ "n" }, "<leader>wH", "<C-w>H", { desc = "Move [W]indow Left" })
+vim.keymap.set({ "n" }, "<A-H>", "<C-w>H", { noremap = true, desc = "Move [W]indow Left" })
 
-vim.keymap.set({ "n" }, "<leader>wL", "<C-w>L", { desc = "Move [W]indow Right" })
+vim.keymap.set({ "n" }, "<A-L>", "<C-w>L", { noremap = true, desc = "Move [W]indow Right" })
 
-vim.keymap.set({ "n" }, "<leader>wJ", "<C-w>J", { desc = "Move [W]indow Down" })
+vim.keymap.set({ "n" }, "<A-J>", "<C-w>J", { noremap = true, desc = "Move [W]indow Down" })
 
-vim.keymap.set({ "n" }, "<leader>wK", "<C-w>K", { desc = "Move [W]indow Up" })
+vim.keymap.set({ "n" }, "<A-K>", "<C-w>K", { noremap = true, desc = "Move [W]indow Up" })
 
-vim.keymap.set({ "n" }, "<leader>wh", "<C-w>h", { desc = "Window Travel Left" })
+vim.keymap.set({ "n" }, "<A-h>", "<C-w>h", { noremap = true, desc = "Window Travel Left" })
 
-vim.keymap.set({ "n" }, "<leader>wl", "<C-w>l", { desc = "Window Travel Right" })
+vim.keymap.set({ "n" }, "<A-l>", "<C-w>l", { noremap = true, desc = "Window Travel Right" })
 
-vim.keymap.set({ "n" }, "<leader>wj", "<C-w>j", { desc = "Window Travel Up" })
+vim.keymap.set({ "n" }, "<A-j>", "<C-w>j", { noremap = true, desc = "Window Travel Down" })
 
-vim.keymap.set({ "n" }, "<leader>wk", "<C-w>k", { desc = "Window Travel Down" })
+vim.keymap.set({ "n" }, "<A-k>", "<C-w>k", { noremap = true, desc = "Window Travel Up" })
 
-vim.keymap.set({ "n" }, "<leader>w=", "<C-w>=", { desc = "[W]indow Equalization ([=])" })
+vim.keymap.set({ "n" }, "<A-=>", "<C-w>=", { noremap = true, desc = "[W]indow Equalization ([=])" })
 
+vim.keymap.set({ "n" }, "<A-.>", "<C-w>>", { noremap = true, desc = "Increase Width" })
+
+vim.keymap.set({ "n" }, "<A-,>", "<C-w><", { noremap = true, desc = "Decrease Width" })
+
+vim.keymap.set({ "n" }, "<A-u>", "<C-w>+", { noremap = true, desc = "Increase Height" })
+
+vim.keymap.set({ "n" }, "<A-d>", "<C-w>-", { noremap = true, desc = "Decrease Height" })
+
+-- quick saves
+
+vim.keymap.set('n', '<A-W>', '<cmd>wa<cr>', { desc = "[S]ave [F]iles ([A]ll)", silent = false, nowait = true })
+
+vim.keymap.set('n', '<A-w>', '<cmd>w<cr>', { desc = "[S]ave [F]ile", silent = false, nowait = true })
+
+-- quick save/quits
+
+vim.keymap.set('n', '<A-Q>', '<cmd>wqa<cr>',
+    { desc = "[S]ave All and [F][F]", silent = false, nowait = true })
+
+vim.keymap.set('n', '<A-q>', '<cmd>wq<cr>', { desc = "[S]ave [F]ile and [Q]uit", silent = false, nowait = true })
+
+
+-- quick quits
+
+vim.keymap.set('n', '<A-z>z', '<cmd>q!<cr>',
+    { desc = "Quit Buffer Without Saving", silent = false, nowait = true })
+
+vim.keymap.set('n', '<A-z>Z', '<cmd>qa!<cr>',
+    { desc = "Quit All Buffers Without Saving", silent = false, nowait = true })
 
 -- local window_traversal_mode = false
 -- function toggle_window_traversal_mode()
@@ -165,32 +198,6 @@ vim.keymap.set('n', '<space>', '<nop>')
 
 
 
--- quick saves
-
-vim.keymap.set('n', '<leader>sfa', '<cmd>wa<cr>', { desc = "[S]ave [F]iles ([A]ll)", silent = false, nowait = true })
-
-vim.keymap.set('n', '<leader>sfw', '<cmd>w<cr>', { desc = "[S]ave [F]ile", silent = false, nowait = true })
-
-
-
--- quick save/quits
-
-vim.keymap.set('n', '<leader>sff', '<cmd>wqa<cr>',
-    { desc = "[S]ave All and [F][F]", silent = false, nowait = true })
-
-vim.keymap.set('n', '<leader>sfq', '<cmd>wq<cr>', { desc = "[S]ave [F]ile and [Q]uit", silent = false, nowait = true })
-
--- vim.keymap.set('n', '<leader><leader><leader>q', '<cmd>qa!<cr>', { silent = false })
-
-
-
--- quick quits
-
-vim.keymap.set('n', '<leader><leader>sfz', '<cmd>q!<cr>',
-    { desc = "Quit File Without Saving", silent = false, nowait = true })
-
-vim.keymap.set('n', '<leader><leader>sfZ', '<cmd>qa!<cr>',
-    { desc = "Quit Neovim Without Saving", silent = false, nowait = true })
 
 
 
@@ -462,9 +469,8 @@ vim.api.nvim_create_autocmd('BufEnter', {
 -- vim.o.shell = 'C:/Users/VAE9WP/AppData/Local/Programs/Git/bin/sh.exe'
 
 
-local status, terminal_exists = pcall(vim.api.nvim_get_option_info, 'terminal_emulator')
-
-if status then
+local is_windows = vim.fn.has('win32')
+if is_windows == 1 then
     vim.o.terminal_emulator = 'C:/Users/VAE9WP/AppData/Local/Programs/Git/bin/sh.exe'
     vim.o.shell = 'C:/Users/VAE9WP/AppData/Local/Programs/Git/bin/sh.exe'
     vim.o.shellcmdflag = '-c'
