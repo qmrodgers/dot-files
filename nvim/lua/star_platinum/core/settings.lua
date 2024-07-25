@@ -16,7 +16,8 @@ vim.keymap.set({ "n", "v" }, "<S-Right>", "<Right>", { noremap = true, silent = 
 
 
 
-
+-- set transparency based on OS
+vim.g.transparency = (vim.fn.has('win32') == 0 and true or false)
 -- vim.keymap.del('n', '<C-w>')
 -- quick window move, splits
 
@@ -36,11 +37,19 @@ vim.keymap.set({ "n" }, "<A-J>", "<C-w>J", { noremap = true, desc = "Move [W]ind
 
 vim.keymap.set({ "n" }, "<A-K>", "<C-w>K", { noremap = true, desc = "Move [W]indow Up" })
 
+vim.keymap.set({ "n" }, "<A-Left>", "<C-w>h", { noremap = true, desc = "Window Travel Left" })
+
 vim.keymap.set({ "n" }, "<A-h>", "<C-w>h", { noremap = true, desc = "Window Travel Left" })
+
+vim.keymap.set({ "n" }, "<A-Right>", "<C-w>l", { noremap = true, desc = "Window Travel Right" })
 
 vim.keymap.set({ "n" }, "<A-l>", "<C-w>l", { noremap = true, desc = "Window Travel Right" })
 
+vim.keymap.set({ "n" }, "<A-Down>", "<C-w>j", { noremap = true, desc = "Window Travel Down" })
+
 vim.keymap.set({ "n" }, "<A-j>", "<C-w>j", { noremap = true, desc = "Window Travel Down" })
+
+vim.keymap.set({ "n" }, "<A-Up>", "<C-w>k", { noremap = true, desc = "Window Travel Up" })
 
 vim.keymap.set({ "n" }, "<A-k>", "<C-w>k", { noremap = true, desc = "Window Travel Up" })
 
@@ -369,6 +378,8 @@ vim.opt.undofile = true
 
 vim.opt.cursorline = true
 
+
+
 vim.opt.completeopt = { "menuone", "noselect", "noinsert" }
 
 vim.opt.shortmess = vim.opt.shortmess + { c = true }
@@ -471,7 +482,7 @@ vim.api.nvim_create_autocmd('BufEnter', {
 
 local is_windows = vim.fn.has('win32')
 if is_windows == 1 then
-    vim.o.terminal_emulator = 'C:/Users/VAE9WP/AppData/Local/Programs/Git/bin/sh.exe'
+    vim.g.terminal_emulator = 'C:/Users/VAE9WP/AppData/Local/Programs/Git/bin/sh.exe'
     vim.o.shell = 'C:/Users/VAE9WP/AppData/Local/Programs/Git/bin/sh.exe'
     vim.o.shellcmdflag = '-c'
 else

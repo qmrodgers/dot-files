@@ -7,7 +7,6 @@ return {
     config = function()
         local colors = {
 
-            bg       = '#011628',
 
             fg       = '#CBE0F0',
 

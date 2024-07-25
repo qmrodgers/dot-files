@@ -9,7 +9,7 @@ return {
         priority = 1000, -- make sure to load this before all other start plugins
 
         config = function()
-            local bg = "#011628"
+            local bg = vim.g.transparency and 'none' or "#011628"
 
             local bg_dark = "#011423"
 
