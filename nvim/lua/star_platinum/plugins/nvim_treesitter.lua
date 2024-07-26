@@ -1,157 +1,143 @@
 return {
 
-    {
+	{
 
-        "nvim-treesitter/nvim-treesitter",
+		"nvim-treesitter/nvim-treesitter",
 
-        event = { "BufReadPre", "BufNewFile" },
+		event = { "BufReadPre", "BufNewFile" },
 
-        build = ":TSUpdate",
+		build = ":TSUpdate",
 
-        dependencies = {
+		dependencies = {
 
-            "nvim-treesitter/nvim-treesitter-textobjects",
+			"nvim-treesitter/nvim-treesitter-textobjects",
 
-            "windwp/nvim-ts-autotag",
+			"windwp/nvim-ts-autotag",
+		},
 
-        },
+		config = function()
+			-- import nvim-treesitter plugin
 
-        config = function()
+			local treesitter = require("nvim-treesitter.configs")
 
-            -- import nvim-treesitter plugin
+			-- configure treesitter
 
-            local treesitter = require("nvim-treesitter.configs")
+			treesitter.setup({ -- enable syntax highlighting
 
+				highlight = {
 
+					enable = true,
+				},
 
-            -- configure treesitter
+				-- enable indentation
 
-            treesitter.setup({ -- enable syntax highlighting
+				indent = { enable = true },
 
-                highlight = {
+				-- enable autotagging (w/ nvim-ts-autotag plugin)
 
-                    enable = true,
+				autotag = {
 
-                },
+					enable = true,
+				},
 
-                -- enable indentation
+				rainbow = {
 
-                indent = { enable = true },
+					enable = true,
 
-                -- enable autotagging (w/ nvim-ts-autotag plugin)
+					extended_mode = true,
 
-                autotag = {
+					max_file_lines = nil,
+				},
 
-                    enable = true,
+				-- ensure these language parsers are installed
 
-                },
+				ensure_installed = {
 
-                rainbow = {
+					"java",
 
-                    enable = true,
+					"kotlin",
 
-                    extended_mode = true,
+					"python",
 
-                    max_file_lines = nil,
+					"rust",
 
-                },
+					"go",
 
-                -- ensure these language parsers are installed
+					"c",
 
-                ensure_installed = {
+					"cpp",
 
-                    "java",
+					"vue",
 
-                    "kotlin",
+					"json",
 
-                    "python",
+					"terraform",
 
-                    "rust",
+					"toml",
 
-                    "go",
+					"javascript",
 
-                    "c",
+					"typescript",
 
-                    "cpp",
+					"tsx",
 
-                    "vue",
+					"yaml",
 
-                    "json",
+					"html",
 
-                    "terraform",
+					"css",
 
-                    "toml",
+					"prisma",
 
-                    "javascript",
+					"markdown",
 
-                    "typescript",
+					"markdown_inline",
 
-                    "tsx",
+					"svelte",
 
-                    "yaml",
+					"graphql",
 
-                    "html",
+					"bash",
 
-                    "css",
+					"lua",
 
-                    "prisma",
+					"vim",
 
-                    "markdown",
+					"dockerfile",
 
-                    "markdown_inline",
+					"gitignore",
 
-                    "svelte",
+					"query",
 
-                    "graphql",
+					"regex",
+				},
 
-                    "bash",
+				incremental_selection = {
 
-                    "lua",
+					enable = true,
 
-                    "vim",
+					keymaps = {
 
-                    "dockerfile",
+						init_selection = "<C-space>",
 
-                    "gitignore",
+						node_incremental = "<C-space>",
 
-                    "query",
+						scope_incremental = false,
 
-                    "regex",
+						node_decremental = "<bs>",
+					},
+				},
 
-                },
+				-- enable nvim-ts-context-commentstring plugin for commenting tsx and jsx
 
-                incremental_selection = {
+				-- context_commentstring = {
 
-                    enable = true,
+				--             enable = true,
 
-                    keymaps = {
+				--             enable_autocmd = false,
 
-                        init_selection = "<C-space>",
-
-                        node_incremental = "<C-space>",
-
-                        scope_incremental = false,
-
-                        node_decremental = "<bs>",
-
-                    },
-
-                },
-
-                -- enable nvim-ts-context-commentstring plugin for commenting tsx and jsx
-
-                -- context_commentstring = {
-
-                    --             enable = true,
-
-                    --             enable_autocmd = false,
-
-                    -- },
-
-                })
-
-            end,
-
-        },
-
-    }
+				-- },
+			})
+		end,
+	},
+}

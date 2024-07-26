@@ -1,1 +1,2 @@
-return { 'karb94/neoscroll.nvim', config = true }
+return {}
+-- return { 'karb94/neoscroll.nvim', config = true }

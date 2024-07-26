@@ -20,4 +20,12 @@ alias prj="nvim $PRJ"
 alias edit_nvim="nvim ${XDG_CONFIG_HOME}/nvim"
 alias edit_i3="nvim ${I3_CONFIG_DIR}/config"
 alias find_font="cat ~/Desktop/nerd_fonts_reference.txt | grep"
+function fix_screen() {
+  xrandr --output eDP-1 --mode 1920x1080 --rate 40.02;
+  sleep 5;
+  xrandr --output eDP-1 --mode 1920x1080 --rate 59.97;
+}
+# alias lower_refresh_rate = "xrandr --output eDP-1 --mode 1920x1080 --rate 40.02"
+# alias raise_refresh_rate = "xrandr --output eDP-1 --mode 1920x1080 --rate 59.97"
+export fix_screen
 echo "Quaid's NEW Config Loaded"

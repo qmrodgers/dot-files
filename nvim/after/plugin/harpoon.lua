@@ -6,7 +6,7 @@ local harpoon_term = require("harpoon.term")
 
 
 
-vim.keymap.set("n", "<leader>h", function()
+vim.keymap.set("n", "gh", function()
     harpoon_ui.toggle_quick_menu()
 end)
 

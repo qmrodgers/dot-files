@@ -1,178 +1,157 @@
 return {
 
-    "nvim-telescope/telescope.nvim",
+	"nvim-telescope/telescope.nvim",
 
-    branch = "0.1.x",
+	branch = "0.1.x",
 
-    dependencies = {
+	dependencies = {
 
-        "nvim-lua/plenary.nvim",
+		"nvim-lua/plenary.nvim",
 
-        { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+		{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 
-        'nvim-telescope/telescope-live-grep-args.nvim',
+		"nvim-telescope/telescope-live-grep-args.nvim",
 
-        "nvim-tree/nvim-web-devicons",
+		"nvim-tree/nvim-web-devicons",
+	},
 
-    },
+	config = function()
+		local telescope = require("telescope")
 
-    config = function()
-        local telescope = require("telescope")
+		local builtin = require("telescope.builtin")
 
-        local builtin = require("telescope.builtin")
+		local actions = require("telescope.actions")
 
-        local actions = require("telescope.actions")
+		local mappings = require("telescope.mappings")
 
-        local mappings = require("telescope.mappings")
+		local lga_actions = require("telescope-live-grep-args.actions")
 
-        local lga_actions = require("telescope-live-grep-args.actions")
+		local lga_shortcuts = require("telescope-live-grep-args.shortcuts")
 
-        local lga_shortcuts = require("telescope-live-grep-args.shortcuts")
+		telescope.setup({
 
-        telescope.setup({
+			defaults = {
 
-            defaults = {
+				vimgrep_arguments = {
 
-                vimgrep_arguments = {
+					"rg",
 
-                    'rg',
+					"--hidden",
 
-                    '--hidden',
+					"--no-heading",
 
-                    '--no-heading',
+					"--with-filename",
 
-                    '--with-filename',
+					"--line-number",
 
-                    '--line-number',
+					"--column",
 
-                    '--column',
+					"--smart-case",
+				},
 
-                    '--smart-case'
+				path_display = { "truncate" },
 
-                },
+				mappings = {
 
-                path_display = { "truncate" },
+					i = {
 
-                mappings = {
+						["<C-k>"] = actions.move_selection_previous, -- move to prev result
 
-                    i = {
+						["<C-j>"] = actions.move_selection_next, -- move to next result
 
-                        ["<C-k>"] = actions.move_selection_previous, -- move to prev result
+						["<C-q>"] = actions.send_to_qflist,
 
-                        ["<C-j>"] = actions.move_selection_next,     -- move to next result
+						["<C-s>"] = actions.file_split,
 
-                        ["<C-q>"] = actions.send_to_qflist,
+						["<C-f>"] = actions.preview_scrolling_down,
 
-                        ["<C-s>"] = actions.file_split,
+						["<C-b>"] = actions.preview_scrolling_up,
+					},
+				},
+			},
+			extensions = {
+				live_grep_args = {
+					auto_quoting = true, -- enable/disable auto-quoting
+					-- define mappings, e.g.
+					mappings = { -- extend mappings
+						i = {
+							["<C-u>"] = lga_actions.quote_prompt(),
+							["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+							-- freeze the current list and start a fuzzy search in the frozen list
+							["<C-o>"] = actions.to_fuzzy_refine,
+						},
+					},
+					-- ... also accepts theme settings, for example:
+					-- theme = "dropdown", -- use dropdown theme
+					-- theme = { }, -- use own theme spec
+					-- layout_config = { mirror=true }, -- mirror preview pane
+				},
+				quicknote = {
 
-                        ["<C-f>"] = actions.preview_scrolling_down,
+					defaultScope = "CWD",
+				},
+			},
+		})
 
-                        ["<C-b>"] = actions.preview_scrolling_up
+		local custom_maps = {}
 
-                    },
+		custom_maps.find_files = function()
+			builtin.find_files({
 
-                },
-            },
-            extensions = {
-                live_grep_args = {
-                    auto_quoting = true, -- enable/disable auto-quoting
-                    -- define mappings, e.g.
-                    mappings = {         -- extend mappings
-                        i = {
-                            ["<C-u>"] = lga_actions.quote_prompt(),
-                            ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
-                            -- freeze the current list and start a fuzzy search in the frozen list
-                            ["<C-o>"] = actions.to_fuzzy_refine,
-                        },
-                    },
-                    -- ... also accepts theme settings, for example:
-                    -- theme = "dropdown", -- use dropdown theme
-                    -- theme = { }, -- use own theme spec
-                    -- layout_config = { mirror=true }, -- mirror preview pane
-                },
-                quicknote = {
+				find_command = { "rg", "--files", "--iglob", "!.git", "--hidden" },
+			})
+		end
 
-                    defaultScope = "CWD",
+		telescope.load_extension("fzf")
 
-                },
+		telescope.load_extension("quicknote")
 
-            },
+		telescope.load_extension("live_grep_args")
 
-        })
+		-- set keymaps
 
+		local keymap = vim.keymap -- for brevity
 
+		keymap.set("n", "gtr", builtin.oldfiles, { desc = "[?] Find recently opened files" })
 
-        local custom_maps = {}
+		keymap.set("n", "gtb", builtin.buffers, { desc = "[ ] Find existing buffers" })
 
+		keymap.set("n", "gtgf", builtin.git_files, { desc = "Search [G]it [F]iles" })
 
+		keymap.set("n", "gtf", custom_maps.find_files, { desc = "[S]earch [F]iles" })
 
-        custom_maps.find_files = function()
-            builtin.find_files {
+		keymap.set("n", "gth", builtin.help_tags, { desc = "[S]earch [H]elp" })
 
-                find_command = { 'rg', '--files', '--iglob', '!.git', '--hidden' }
+		-- keymap.set("n", "<leader>sw", builtin.grep_string, { desc = "[S]earch current [W]ord" })
 
-            }
-        end
+		keymap.set("n", "gtp", builtin.resume, { desc = "[P]revious [P]icker" })
 
+		keymap.set("n", "gtq", "<cmd>Telescope quickfix<CR>", { desc = "View Quick Fix Menu" })
 
+		keymap.set("n", "gtQ", "<cmd>Telescope quickfixhistory<CR>", { desc = "View Quick Fix History Menu" })
 
-        telescope.load_extension("fzf")
+		keymap.set(
+			"n",
+			"gts",
+			require("telescope").extensions.live_grep_args.live_grep_args,
+			{ desc = "[S]earch by [G]rep" }
+		)
 
-        telescope.load_extension("quicknote")
+		keymap.set("n", "gtS", lga_shortcuts.grep_word_under_cursor, { desc = "[S]earch Current Word by [G]rep" })
 
-        telescope.load_extension("live_grep_args")
+		keymap.set("n", "gtd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })
 
+		keymap.set("n", "gtk", ":Telescope keymaps<CR>", { desc = "[T]elescope keymaps" })
 
+		keymap.set("n", "gt/", function()
+			-- You can pass additional configuration to telescope to change theme, layout, etc.
 
-        -- set keymaps
+			builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
 
-        local keymap = vim.keymap -- for brevity
+				winblend = 10,
 
-
-
-        keymap.set("n", "<leader>?", builtin.oldfiles, { desc = "[?] Find recently opened files" })
-
-        keymap.set("n", "<leader><leader>b", builtin.buffers, { desc = "[ ] Find existing buffers" })
-
-        keymap.set("n", "<leader>gf", builtin.git_files, { desc = "Search [G]it [F]iles" })
-
-        keymap.set("n", "<leader>ff", custom_maps.find_files, { desc = "[S]earch [F]iles" })
-
-        keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "[S]earch [H]elp" })
-
-        keymap.set("n", "<leader>sw", builtin.grep_string, { desc = "[S]earch current [W]ord" })
-
-        keymap.set("n", "<leader>pp", builtin.resume, { desc = "[P]revious [P]icker" })
-
-        keymap.set("n", "<leader>q", "<cmd>Telescope quickfix<CR>", { desc = "View Quick Fix Menu" })
-
-        keymap.set("n", "<leader>Q", "<cmd>Telescope quickfixhistory<CR>", { desc = "View Quick Fix History Menu" })
-
-        keymap.set("n", "<leader>sg",
-            require('telescope').extensions.live_grep_args.live_grep_args,
-            { desc = "[S]earch by [G]rep" })
-
-        keymap.set("n", "<leader>sG",
-            lga_shortcuts.grep_word_under_cursor,
-            { desc = "[S]earch Current Word by [G]rep" })
-
-        keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })
-
-        keymap.set("n", "<leader>tkm", ":Telescope keymaps<CR>", { desc = "[T]elescope keymaps" })
-
-
-
-        keymap.set("n", "<leader>/", function()
-            -- You can pass additional configuration to telescope to change theme, layout, etc.
-
-            builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
-
-                winblend = 10,
-
-                previewer = false,
-
-            }))
-        end, { desc = "[/] Fuzzily search in current buffer" })
-    end,
-
+				previewer = false,
+			}))
+		end, { desc = "[/] Fuzzily search in current buffer" })
+	end,
 }

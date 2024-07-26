@@ -5,6 +5,6 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
-vim.keymap.set("n", "<leader>o", function()
+vim.keymap.set("n", "go", function()
     require("oil").toggle_float()
 end)
