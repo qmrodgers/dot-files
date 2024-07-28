@@ -12,13 +12,25 @@ export ALACRITTY_CONFIG_DIR="~/.config/alacritty/"
 export PRJ="/home/quaidr/Projects/"
 export BROWSER="mullvad-browser"
 
+# Map Ctrl-j, Ctrl-k, Ctrl-h, Ctrl-l to arrow keys
+bindkey -s '^j' '^[[B'
+bindkey -s '^k' '^[[A'
+bindkey -s '^h' '^[[D'
+bindkey -s '^l' '^[[C'
+
+# Map Alt-Q to exit
+# k
+
+
+# bindkey -v    to enable vi mapping
 # ALIAS
 alias v="nvim"
 alias sv="sudo -E -s nvim"
 alias ll="ls --color=auto -la"
-alias prj="nvim $PRJ"
-alias edit_nvim="nvim ${XDG_CONFIG_HOME}/nvim"
+alias prj="cd $PRJ; nvim"
+alias edit_nvim="cd ${XDG_CONFIG_HOME}/nvim ; nvim"
 alias edit_i3="nvim ${I3_CONFIG_DIR}/config"
+alias edit_tmux="nvim ${XDG_CONFIG_HOME}/tmux/.tmux.conf"
 alias find_font="cat ~/Desktop/nerd_fonts_reference.txt | grep"
 function fix_screen() {
   xrandr --output eDP-1 --mode 1920x1080 --rate 40.02;

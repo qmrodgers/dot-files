@@ -1,4 +1,5 @@
 -- jj exits insert mode
+-- vim.opt.iskeyword:remove({ "_" })
 
 vim.keymap.set("i", "jk", "<ESC>", { desc = "Exit Insert Mode" })
 
@@ -9,10 +10,19 @@ vim.keymap.set("n", "<S-k>", "k", { noremap = true, silent = true })
 vim.keymap.set("n", "<S-h>", "h", { noremap = true, silent = true })
 vim.keymap.set("n", "<S-l>", "l", { noremap = true, silent = true })
 
-vim.keymap.set({ "n", "v" }, "<S-Down>", "<Down>", { noremap = true, silent = true })
-vim.keymap.set({ "n", "v" }, "<S-Up>", "<Up>", { noremap = true, silent = true })
-vim.keymap.set({ "n", "v" }, "<S-Left>", "<Left>", { noremap = true, silent = true })
-vim.keymap.set({ "n", "v" }, "<S-Right>", "<Right>", { noremap = true, silent = true })
+vim.keymap.set("i", "<C-j>", "<Down>", { noremap = true, silent = true })
+vim.keymap.set("i", "<C-k>", "<Up>", { noremap = true, silent = true })
+vim.keymap.set("i", "<C-h>", "<Left>", { noremap = true, silent = true })
+vim.keymap.set("i", "<C-l>", "<Right>", { noremap = true, silent = true })
+
+-- vim.keymap.set({ "n", "v" }, "<S-Down>", "<Down>", { noremap = true, silent = true })
+-- vim.keymap.set({ "n", "v" }, "<S-Up>", "<Up>", { noremap = true, silent = true })
+-- vim.keymap.set({ "n", "v" }, "<S-Left>", "<Left>", { noremap = true, silent = true })
+-- vim.keymap.set({ "n", "v" }, "<S-Right>", "<Right>", { noremap = true, silent = true })
+vim.keymap.set({ "n", "i", "v" }, "<Down>", "<nop>", { noremap = true, silent = true })
+vim.keymap.set({ "n", "i", "v" }, "<Up>", "<nop>", { noremap = true, silent = true })
+vim.keymap.set({ "n", "i", "v" }, "<Left>", "<nop>", { noremap = true, silent = true })
+vim.keymap.set({ "n", "i", "v" }, "<Right>", "<nop>", { noremap = true, silent = true })
 
 vim.keymap.set({ "n", "v" }, "<C-d>", "<C-d>zz", { noremap = true, silent = true })
 vim.keymap.set({ "n", "v" }, "<C-u>", "<C-u>zz", { noremap = true, silent = true })
@@ -28,7 +38,9 @@ vim.keymap.set({ "n" }, "<leader>sv", "<C-w>v", { noremap = true, desc = "Window
 
 vim.keymap.set({ "n" }, "<leader>ss", "<C-w>s", { noremap = true, desc = "[W]indow Horizontal [S]plit" })
 
-vim.keymap.set({ "n" }, "<leader>q", "<C-w>q", { noremap = true, desc = "[C]lose Window" })
+vim.keymap.set({ "n" }, "<leader>se", "<C-w>=", { noremap = true, desc = "Make splits equal size" })
+
+vim.keymap.set({ "n" }, "<leader><leader>c", "<C-w>q", { noremap = true, desc = "[C]lose Window" })
 
 vim.keymap.set({ "n" }, "<A-H>", "<C-w>H", { noremap = true, desc = "Move [W]indow Left" })
 
@@ -38,23 +50,18 @@ vim.keymap.set({ "n" }, "<A-J>", "<C-w>J", { noremap = true, desc = "Move [W]ind
 
 vim.keymap.set({ "n" }, "<A-K>", "<C-w>K", { noremap = true, desc = "Move [W]indow Up" })
 
-vim.keymap.set({ "n" }, "<A-Left>", "<C-w>h", { noremap = true, desc = "Window Travel Left" })
-
 vim.keymap.set({ "n" }, "<A-h>", "<C-w>h", { noremap = true, desc = "Window Travel Left" })
-
-vim.keymap.set({ "n" }, "<A-Right>", "<C-w>l", { noremap = true, desc = "Window Travel Right" })
 
 vim.keymap.set({ "n" }, "<A-l>", "<C-w>l", { noremap = true, desc = "Window Travel Right" })
 
-vim.keymap.set({ "n" }, "<A-Down>", "<C-w>j", { noremap = true, desc = "Window Travel Down" })
-
 vim.keymap.set({ "n" }, "<A-j>", "<C-w>j", { noremap = true, desc = "Window Travel Down" })
 
-vim.keymap.set({ "n" }, "<A-Up>", "<C-w>k", { noremap = true, desc = "Window Travel Up" })
+-- vim.keymap.set({ "n" }, "<A-Left>", "<C-w>h", { noremap = true, desc = "Window Travel Left" })
+-- vim.keymap.set({ "n" }, "<A-Right>", "<C-w>l", { noremap = true, desc = "Window Travel Right" })
+-- vim.keymap.set({ "n" }, "<A-Down>", "<C-w>j", { noremap = true, desc = "Window Travel Down" })
+-- vim.keymap.set({ "n" }, "<A-Up>", "<C-w>k", { noremap = true, desc = "Window Travel Up" })
 
 vim.keymap.set({ "n" }, "<A-k>", "<C-w>k", { noremap = true, desc = "Window Travel Up" })
-
-vim.keymap.set({ "n" }, "<A-=>", "<C-w>=", { noremap = true, desc = "[W]indow Equalization ([=])" })
 
 vim.keymap.set({ "n" }, "<A-.>", "<C-w>>", { noremap = true, desc = "Increase Width" })
 
@@ -66,28 +73,33 @@ vim.keymap.set({ "n" }, "<A-d>", "<C-w>-", { noremap = true, desc = "Decrease He
 
 -- quick saves
 
-vim.keymap.set("n", "<leader>W", "<cmd>wa<cr>", { desc = "[S]ave [F]iles ([A]ll)", silent = false, nowait = true })
+vim.keymap.set(
+	"n",
+	"<leader><leader>W",
+	"<cmd>wa<cr>",
+	{ desc = "[S]ave [F]iles ([A]ll)", silent = false, nowait = true }
+)
 
-vim.keymap.set("n", "<leader>w", "<cmd>w<cr>", { desc = "[S]ave [F]ile", silent = false, nowait = true })
+vim.keymap.set("n", "<leader><leader>w", "<cmd>w<cr>", { desc = "[S]ave [F]ile", silent = false, nowait = true })
 
 -- quick save/quits
 
-vim.keymap.set("n", "<A-Z>", "<cmd>wqa<cr>", { desc = "[S]ave All and [F][F]", silent = false, nowait = true })
+vim.keymap.set("n", "<leader><leader>q", "ZZ", { desc = "[S]ave All and [F][F]", silent = false, nowait = true })
 
-vim.keymap.set("n", "<A-z>", "<cmd>wq<cr>", { desc = "[S]ave [F]ile and [Q]uit", silent = false, nowait = true })
+vim.keymap.set(
+	"n",
+	"<leader><leader>Q",
+	"<cmd>wq<cr>",
+	{ desc = "[S]ave [F]ile and [Q]uit", silent = false, nowait = true }
+)
 
 -- quick quits
+
+vim.keymap.set("n", "<leader><leader>Z", "ZQ", { desc = "Quit Buffer Without Saving", silent = false, nowait = true })
 
 vim.keymap.set(
 	"n",
 	"<leader><leader>z",
-	"<cmd>q!<cr>",
-	{ desc = "Quit Buffer Without Saving", silent = false, nowait = true }
-)
-
-vim.keymap.set(
-	"n",
-	"<leader><leader>Z",
 	"<cmd>qa!<cr>",
 	{ desc = "Quit All Buffers Without Saving", silent = false, nowait = true }
 )
@@ -261,8 +273,6 @@ vim.keymap.set("i", "<A-i>", "<ESC>I")
 
 vim.keymap.set("i", "<A-a>", "<ESC>A")
 
-vim.opt.iskeyword:append({ "_" })
-
 -- SETTINGS
 
 -- Copy/Paste from outside of NVIM
@@ -373,9 +383,9 @@ vim.opt.isfname:append("@-@")
 vim.api.nvim_create_autocmd("BufEnter", {
 
 	callback = function()
-		vim.api.nvim_set_hl(0, "LineNr", { fg = "#D3C6AA" })
+		--		vim.api.nvim_set_hl(0, "LineNr", { fg = "#D3C6AA" })
 
-		vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#7FBBB3" })
+		--	vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#7FBBB3" })
 	end,
 })
 
@@ -415,35 +425,11 @@ end
 
 -- })
 
--- keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" })
-
--- keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" })
-
--- keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" })
-
 vim.keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "lose current split" })
-
-vim.keymap.set("n", "<leader>to", "<cmd>tabnew<CR>", { desc = "Open new tab" })
-
-vim.keymap.set("n", "<leader>tx", "<cmd>tabclose<CR>", { desc = "Close current tab" })
-
-vim.keymap.set("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Go to next tab" })
-
-vim.keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "go to previous tab" })
-
-vim.keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer in new tab" })
 
 -- delete single character without copying into register
 
 vim.keymap.set("n", "x", '"_x')
-
---vim.keymap.set("n", "<leader>hh", "<cmd>cd %:h<CR>", { desc = "Set neovim home dir to here" })
-
--- increment/decrement numbers
-
-vim.keymap.set("n", "<leader>+", "<C-a>", { desc = "Increment number" })
-
-vim.keymap.set("n", "<leader>-", "<C-x>", { desc = "Decrement number" })
 
 vim.cmd([[
 
